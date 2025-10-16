@@ -45,6 +45,8 @@ import org.springframework.core.style.ToStringCreator;
 @Table(name = "owners")
 public class Owner extends Person {
 
+
+
     @Column(name = "address")
     @NotEmpty
     private String address;
@@ -58,6 +60,7 @@ public class Owner extends Person {
     @Digits(fraction = 0, integer = 10)
     private String telephone;
 
+
     @Column(name = "nif")
     @NotEmpty
     private String nif;
@@ -66,6 +69,12 @@ public class Owner extends Person {
     private Set<Pet> pets;
 
     // Getters e Setters
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    private Set<Pet> pets;
+
+
+
     public String getAddress() {
         return this.address;
     }
@@ -90,6 +99,7 @@ public class Owner extends Person {
         this.telephone = telephone;
     }
 
+
     public String getNif() {
         return this.nif;
     }
@@ -97,6 +107,8 @@ public class Owner extends Person {
     public void setNif(String nif) {
         this.nif = nif;
     }
+
+
 
     protected Set<Pet> getPetsInternal() {
         if (this.pets == null) {
@@ -120,15 +132,35 @@ public class Owner extends Person {
         pet.setOwner(this);
     }
 
+
+    /**
+     * Return the Pet with the given name, or null if none found for this Owner.
+     *
+     * @param name to test
+     * @return true if pet name is already in use
+     */
+
     public Pet getPet(String name) {
         return getPet(name, false);
     }
+
+
+
+    /**
+     * Return the Pet with the given name, or null if none found for this Owner.
+     *
+     * @param name to test
+     * @return true if pet name is already in use
+     */
 
     public Pet getPet(String name, boolean ignoreNew) {
         name = name.toLowerCase();
         for (Pet pet : getPetsInternal()) {
             if (!ignoreNew || !pet.isNew()) {
-                String compName = pet.getName().toLowerCase();
+
+                String compName = pet.getName();
+                compName = compName.toLowerCase();
+
                 if (compName.equals(name)) {
                     return pet;
                 }
@@ -140,6 +172,10 @@ public class Owner extends Person {
     @Override
     public String toString() {
         return new ToStringCreator(this)
+
+
+
+
             .append("id", this.getId())
             .append("new", this.isNew())
             .append("lastName", this.getLastName())
@@ -147,7 +183,10 @@ public class Owner extends Person {
             .append("address", this.address)
             .append("city", this.city)
             .append("telephone", this.telephone)
+
             .append("nif", this.nif)
+
+
             .toString();
     }
 }
