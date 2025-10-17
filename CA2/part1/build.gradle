@@ -1,0 +1,72 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+}
+
+application {
+    mainClass = 'org.example.App'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+/* ==========================
+   CA2 – Parte 1: Tarefas Personalizadas (versão final compatível com Gradle 9.1.0)
+   ========================== */
+
+// 1️⃣ Tarefa para compilar e gerar o JAR
+tasks.register('buildApp') {
+    group = 'CA2'
+    description = 'Compila o projeto e gera o ficheiro JAR.'
+    dependsOn 'build'
+}
+
+// 2️⃣ Tarefa para criar backup das fontes
+tasks.register('backupSources', Copy) {
+    group = 'CA2'
+    description = 'Cria uma cópia dos ficheiros fonte em backup/'
+
+    // ✅ Define variáveis fixas fora dos closures
+    def srcDir = layout.projectDirectory.dir("src").asFile
+    def backupDir = layout.projectDirectory.dir("backup").asFile
+
+    from(srcDir)
+    into(backupDir)
+
+    doFirst {
+        println "📂 A copiar ficheiros fonte de: ${srcDir.absolutePath}"
+    }
+
+    doLast {
+        println "✅ Backup criado com sucesso em: ${backupDir.absolutePath}"
+    }
+}
+
+// 3️⃣ Tarefa para comprimir o backup num ficheiro zip
+tasks.register('zipBackup', Zip) {
+    group = 'CA2'
+    description = 'Compacta a pasta backup num ficheiro zip.'
+
+    def backupDir = layout.projectDirectory.dir("backup").asFile
+    def zipDest = layout.buildDirectory.dir("distributions").get().asFile
+
+    from(backupDir)
+    archiveFileName = 'backup.zip'
+    destinationDirectory = layout.buildDirectory.dir("distributions")
+
+    doFirst {
+        println "📦 A criar o ficheiro ZIP a partir da pasta: ${backupDir.absolutePath}"
+    }
+
+    doLast {
+        println "✅ Ficheiro backup.zip criado em: ${zipDest.absolutePath}"
+    }
+}
