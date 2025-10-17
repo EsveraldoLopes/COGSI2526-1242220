@@ -49,6 +49,9 @@ public class Vet extends Person {
         inverseJoinColumns = @JoinColumn(name = "specialty_id"))
     private Set<Specialty> specialties;
 
+    // 🆕 Novo campo adicionado para o CA1 (email)
+    private String email;
+
     protected Set<Specialty> getSpecialtiesInternal() {
         if (this.specialties == null) {
             this.specialties = new HashSet<>();
@@ -75,4 +78,13 @@ public class Vet extends Person {
         getSpecialtiesInternal().add(specialty);
     }
 
+    // 🆕 Getters e Setters do campo email
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
+
