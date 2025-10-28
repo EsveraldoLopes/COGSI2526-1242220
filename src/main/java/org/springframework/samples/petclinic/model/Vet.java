@@ -73,6 +73,16 @@ public class Vet extends Person {
 
     public void addSpecialty(Specialty specialty) {
         getSpecialtiesInternal().add(specialty);
-    }
+   }
+}
 
+// Campo adicionado para CA1 – Parte 2
+private String emailAddress;
+
+public String getEmailAddress() {
+    return emailAddress;
+}
+
+public void setEmailAddress(String emailAddress) {
+    this.emailAddress = emailAddress;
 }
