@@ -1,38 +1,69 @@
-# 🧾 Tutorial – CA1 (Version Control com Git e GitHub)
+🧾 Tutorial – CA1 (Version Control com Git e GitHub)
+🗂️ Índice
 
-### 🎓 Unidade Curricular
-**Configuração e Gestão de Sistemas (COGSI)**  
-**Professor:** Luís Nogueira  
-**Estudante:** Esveraldo Lopes  
-**Ano Letivo:** 2025/2026  
-**Instituição:** Universidade Lusófona do Porto  
+🎓 Unidade Curricular
 
----
-## 1️⃣ Objetivo
-Aplicar o **controlo de versões** com **Git** e **GitHub**, usando boas práticas: criação de branches, commits descritivos, tags e histórico.  
-O projeto base usado foi o **Spring PetClinic**.
+1️⃣ Objetivo
 
----
+2️⃣ Ferramentas Utilizadas
 
-## 2️⃣ Ferramentas Utilizadas
-| Ferramenta | Função | Versão/Notas |
-|---|---|---|
-| Git | Controlo de versões | 2.47.0 |
-| GitHub | Repositório remoto | — |
-| Git Bash | Terminal | Windows 11 |
-| VS Code | Editor | Atual |
-| Maven | Build tool do projeto base | 3.9.x |
-| Java | Linguagem do projeto | 17+ |
+3️⃣ Estrutura Inicial (Spring PetClinic)
 
----
+4️⃣ Desenvolvimento – Passo a Passo
 
----
+Passo 1 – Clonar o repositório base
 
-## 3️⃣ Estrutura Inicial (Spring PetClinic)
+Passo 2 – Criação do repositório do aluno
 
-A estrutura inicial do projeto foi baseada no código original do **Spring PetClinic**, que serviu como ponto de partida para as modificações realizadas durante o CA1.
+Passo 3 – Criação da branch de trabalho
 
-```bash
+Passo 4 – Alteração no código
+
+Passo 5 – Teste e execução
+
+Passo 6 – Versionamento e publicação
+
+7️⃣ Conclusões da Parte 1
+
+🧩 Parte 2 – Gestão de Branches e Conflitos
+
+Passo 1 – Branch email-field
+
+Passo 2 – Branch license-update
+
+Passo 3 – Alteração na main
+
+Passo 4 – Merge e resolução de conflito
+
+Passo 5 – Tag final e publicação
+
+✅ Conclusões da Parte 2
+
+🎓 Unidade Curricular
+
+Configuração e Gestão de Sistemas (COGSI)
+Professor: Luís Nogueira
+Estudante: Esveraldo Lopes
+Ano Letivo: 2025/2026
+Instituição: ISEP – Instituto Superior de Engenharia do Porto
+
+1️⃣ Objetivo
+
+Aplicar o controlo de versões com Git e GitHub, usando boas práticas: criação de branches, commits descritivos, tags e histórico.
+O projeto base usado foi o Spring PetClinic.
+
+2️⃣ Ferramentas Utilizadas
+Ferramenta	Função	Versão/Notas
+Git	Controlo de versões	2.47.0
+GitHub	Repositório remoto	—
+Git Bash	Terminal	Windows 11
+VS Code	Editor	Atual
+Maven	Build tool do projeto base	3.9.x
+Java	Linguagem do projeto	17+
+3️⃣ Estrutura Inicial (Spring PetClinic)
+
+A estrutura inicial do projeto foi baseada no código original do Spring PetClinic, que serviu como ponto de partida para as modificações realizadas durante o CA1.
+
 spring-framework-petclinic/
 ├── src/main/java/org/springframework/samples/petclinic/model/Vet.java
 ├── src/main/webapp/WEB-INF/jsp/vets/
@@ -40,62 +71,25 @@ spring-framework-petclinic/
 │   └── vetList.jsp
 ├── pom.xml
 └── README.md
-```
----
-## 4️⃣ Desenvolvimento – Passo a Passo
 
-Nesta secção são descritos, de forma sequencial e explicativa, todos os passos realizados para aplicar o **controlo de versões com Git e GitHub** no contexto do projeto **Spring PetClinic**.
+4️⃣ Desenvolvimento – Passo a Passo
 
----
-### 🔹 Passo 1 – Clonar o repositório base
+Nesta secção são descritos, de forma sequencial e explicativa, todos os passos realizados para aplicar o controlo de versões com Git e GitHub no contexto do projeto Spring PetClinic.
 
-Primeiro, o projeto PetClinic foi clonado a partir do repositório GitHub:
-
-```bash
+🔹 Passo 1 – Clonar o repositório base
 git clone https://github.com/spring-projects/spring-petclinic.git
 cd spring-petclinic
 
-```
-
----
-
-### 🔹 Passo 2 – Criação do repositório do aluno (CA1)
-
-Depois de explorar o código original, foi criado o repositório **pessoal no GitHub** com o nome  
-`COGSI2526-1242220`, para alojar todas as tarefas práticas da unidade curricular.
-
-Primeiro, foi removido o *remote* original (do projeto PetClinic) e associado o novo repositório do aluno:
-
-```bash
+🔹 Passo 2 – Criação do repositório do aluno (CA1)
 git remote remove origin
 git remote add origin https://github.com/EsveraldoLopes/COGSI2526-1242220.git
 git push -u origin main
-```
----
 
-### 🔹 Passo 3 – Criação da branch de trabalho para o CA1
-
-Para organizar o desenvolvimento e manter o histórico limpo, foi criada uma **branch específica** para o CA1.  
-Isso permite separar as alterações desta atividade do código principal (`main`).
-
-```bash
+🔹 Passo 3 – Criação da branch de trabalho para o CA1
 git checkout -b ca1-version-control
-```
 
----
-
-### 🔹 Passo 4 – Alteração no código (adição do campo "Licença Profissional")
-
-Nesta etapa, foi feita uma modificação real no código do projeto **Spring PetClinic**, adicionando um novo campo chamado  
-`professionalLicenseNumber` à classe `Vet.java` e ao formulário JSP de criação/edição de veterinários.
-
-#### 🧩 4.1 Alteração na classe `Vet.java`
-
-Ficheiro:  
-`src/main/java/org/springframework/samples/petclinic/model/Vet.java`
-
-```java
-// Novo atributo adicionado
+🔹 Passo 4 – Alteração no código (adição do campo “Licença Profissional”)
+🧩 4.1 Alteração na classe Vet.java
 private String professionalLicenseNumber;
 
 public String getProfessionalLicenseNumber() {
@@ -105,97 +99,105 @@ public String getProfessionalLicenseNumber() {
 public void setProfessionalLicenseNumber(String professionalLicenseNumber) {
     this.professionalLicenseNumber = professionalLicenseNumber;
 }
-```
-#### 🧩 4.2 Alteração no formulário JSP
 
-Ficheiro:  
-`src/main/webapp/WEB-INF/jsp/vets/createOrUpdateVetForm.jsp`
-
-```jsp
+🧩 4.2 Alteração no formulário JSP
 <tr>
   <th><label for="professionalLicenseNumber">Licença Profissional:</label></th>
   <td><input type="text" id="professionalLicenseNumber" name="professionalLicenseNumber"
       value="${vet.professionalLicenseNumber}" /></td>
 </tr>
-```
----
 
-### 🔹 Passo 5 – Teste e execução da aplicação (verificação funcional)
-
-Após as alterações no código, foi necessário **testar a aplicação** para garantir que tudo continuava funcional e que o novo campo “Licença Profissional” aparecia corretamente no formulário.
-
-#### ⚙️ 5.1 Compilação e execução
-
-Para iniciar o projeto com o *Spring Boot*, foi utilizado o *wrapper* do Maven incluído no repositório:
-
-```bash
+🔹 Passo 5 – Teste e execução da aplicação
 ./mvnw spring-boot:run
-```
-Durante a execução, o terminal apresentou a mensagem:
 
 
-#### 🌐 5.2 Verificação no navegador
+🌐 Aceder a http://localhost:8080/vets
 
-No navegador, ao aceder a:http://localhost:8080/vets
+✅ Aplicação funcional, campo visível e dados persistidos.
 
-
-✅ Foi confirmado que:
-- A aplicação **compila e corre sem erros**;
-- O campo **“Licença Profissional”** aparece no formulário de criação/edição de veterinários;
-- As informações são **guardadas e exibidas corretamente**.
-
----
----
-
-### 🔹 Passo 6 – Versionamento e publicação no GitHub
-
-Após verificar que a aplicação estava funcional, as alterações foram preparadas para envio ao GitHub.  
-O objetivo foi manter um **histórico limpo**, com commits descritivos e uma tag de versão.
-
-#### 📦 6.1 Adicionar e confirmar as alterações
-
-```bash
+🔹 Passo 6 – Versionamento e publicação no GitHub
 git add .
 git commit -m "feat(CA1): adicionar professionalLicenseNumber em Vet e no formulário JSP"
-```
-#### 🏷️ 6.2 Criar uma *tag* identificando a versão CA1
-
-Após o commit, foi criada uma **tag** para marcar a versão final do trabalho prático CA1.
-
-```bash
 git tag -a v1.2.0 -m "Versão CA1 – adição do campo Licença Profissional"
-```
+git push origin ca1-version-control
+git push origin --tags
 
----
+7️⃣ Conclusões da Parte 1
 
-## 7️⃣ Conclusões e Referências
+Consolidação do uso do Git e GitHub para versionamento de código.
 
-### 🧩 Conclusões
+Criação de commits descritivos, branches e tags.
 
-Com este trabalho prático (CA1), foi possível consolidar o uso do **Git e GitHub** como ferramentas essenciais para o **controlo de versões** em projetos de software.
+Integração de boas práticas de controlo de versões num projeto real (Spring PetClinic).
 
-As principais aprendizagens foram:
+🧩 Parte 2 – Gestão de Branches e Resolução de Conflitos
 
-- Compreensão do ciclo de versionamento (clone → branch → commit → tag → push);
-- Aplicação de boas práticas de commits e gestão de histórico;
-- Integração entre código Java real (Spring PetClinic) e versionamento remoto;
-- Documentação técnica das alterações no código.
+Nesta segunda parte, foi explorado o controlo de versões avançado, incluindo criação de múltiplas branches e resolução manual de conflitos.
 
-O resultado final é um repositório funcional, documentado e versionado de acordo com padrões profissionais de desenvolvimento colaborativo.
+🔹 Passo 1 – Criação da branch email-field
+git checkout -b email-field
 
----
+private String email;
 
-### 📚 Referências
+public String getEmail() { return email; }
+public void setEmail(String email) { this.email = email; }
 
-- [Documentação oficial do Git](https://git-scm.com/doc)  
-- [Documentação do GitHub](https://docs.github.com)  
-- [Spring PetClinic – Projeto base](https://github.com/spring-projects/spring-petclinic)  
-- [Maven Wrapper](https://maven.apache.org/wrapper/)  
-- [Guia de boas práticas de commits](https://www.conventionalcommits.org/)
+git add .
+git commit -m "feat(CA1-part2): adicionar campo email à classe Vet"
+git tag -a v1.3.0 -m "Versão CA1-Part2 – Campo email adicionado"
 
----
+🔹 Passo 2 – Criação da branch license-update
+git checkout -b license-update
 
-📅 **Data:** 17/10/2025  
-✍️ **Autor:** *Esveraldo Lopes*  
-🏛️ **Instituição:** *ISEP – Instituto Superior de Engenharia do Porto*
+private String contactEmail;
 
+public String getContactEmail() { return contactEmail; }
+public void setContactEmail(String contactEmail) { this.contactEmail = contactEmail; }
+
+git add src/main/java/org/springframework/samples/petclinic/model/Vet.java
+git commit -m "chore(CA1-part2): renomear campo email para contactEmail (branch license-update)"
+
+🔹 Passo 3 – Alteração paralela na branch main
+git checkout main
+
+private String emailAddress;
+
+public String getEmailAddress() { return emailAddress; }
+public void setEmailAddress(String emailAddress) { this.emailAddress = emailAddress; }
+
+git add src/main/java/org/springframework/samples/petclinic/model/Vet.java
+git commit -m "chore(CA1-part2): renomear campo email para emailAddress (branch main)"
+
+🔹 Passo 4 – Merge e resolução manual de conflito
+git merge license-update
+
+
+💡 O Git identificou conflito no ficheiro Vet.java.
+Após análise, decidiu-se manter a versão contactEmail:
+
+private String contactEmail;
+
+public String getContactEmail() { return contactEmail; }
+public void setContactEmail(String contactEmail) { this.contactEmail = contactEmail; }
+
+git add src/main/java/org/springframework/samples/petclinic/model/Vet.java
+git commit -m "fix(CA1-part2): resolução de conflito entre main e license-update"
+
+🔹 Passo 5 – Criação da tag final e publicação no GitHub
+git tag -a ca1-part2 -m "CA1 – Parte 2 concluída (Gestão de branches e resolução de conflito)"
+git push origin main
+git push origin --tags
+
+✅ Conclusões da Parte 2
+
+Prática de criação e gestão de branches independentes;
+
+Compreensão do processo de merge e resolução manual de conflitos;
+
+Uso de tags para marcar marcos de desenvolvimento;
+
+Consolidação das boas práticas de versionamento colaborativo.
+
+📅 Data: 25/10/2025
+✍️ Autor: Esveraldo Lopes
+🏛️ Instituição: ISEP – Instituto Superior de Engenharia do Porto
