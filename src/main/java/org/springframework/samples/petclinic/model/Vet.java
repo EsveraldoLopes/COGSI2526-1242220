@@ -44,15 +44,16 @@ import org.springframework.beans.support.PropertyComparator;
 @Table(name = "vets")
 public class Vet extends Person {
 
-    private String email;
+   private String contactEmail;
 
-public String getEmail() {
-    return email;
+public String getContactEmail() {
+    return contactEmail;
 }
 
-public void setEmail(String email) {
-    this.email = email;
+public void setContactEmail(String contactEmail) {
+    this.contactEmail = contactEmail;
 }
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
