@@ -44,6 +44,16 @@ import org.springframework.beans.support.PropertyComparator;
 @Table(name = "vets")
 public class Vet extends Person {
 
+    private String email;
+
+public String getEmail() {
+    return email;
+}
+
+public void setEmail(String email) {
+    this.email = email;
+}
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
         inverseJoinColumns = @JoinColumn(name = "specialty_id"))
