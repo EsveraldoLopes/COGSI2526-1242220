@@ -82,6 +82,7 @@ Tarefa	Tipo	Função	Output
 buildApp	Execução	Compila o projeto e gera o ficheiro .jar	build/libs/
 backupSources	Cópia	Cria uma cópia dos ficheiros fonte	backup/
 zipBackup	Compressão	Cria um ficheiro ZIP do backup	build/distributions/backup.zip
+
 6️⃣ Execução das Tarefas no Terminal
 
 As tarefas foram executadas sequencialmente no terminal:
