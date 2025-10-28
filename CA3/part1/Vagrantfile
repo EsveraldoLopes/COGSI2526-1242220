@@ -1,0 +1,26 @@
+# 🧱 Vagrantfile - CA3 (Virtualização e Provisionamento Automático)
+# Autor: Esveraldo Lopes | ISEP 2025/2026
+# Descrição: Criação de uma máquina virtual Ubuntu 22.04 com provisionamento via shell.
+
+Vagrant.configure("2") do |config|
+
+  # Sistema base
+  config.vm.box = "ubuntu/jammy64"
+  config.vm.hostname = "ca3-vm"
+  
+  # Rede privada (para comunicação local)
+  config.vm.network "private_network", ip: "192.168.56.10"
+
+  # Pasta partilhada entre host e VM
+  config.vm.synced_folder ".", "/vagrant"
+
+  # Provisionamento via script externo
+  config.vm.provision "shell", path: "provision.sh"
+
+  # Configuração de memória e CPU
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "CA3_VM_Esveraldo"
+    vb.memory = 2048
+    vb.cpus = 2
+  end
+end
