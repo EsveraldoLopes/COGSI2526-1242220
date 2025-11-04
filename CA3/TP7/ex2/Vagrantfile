@@ -1,0 +1,54 @@
+Vagrant.configure("2") do |config|
+  # box base para as duas VMs
+  config.vm.box = "bento/ubuntu-22.04"
+# --- Global Provisioner ---
+config.vm.provision "shell", inline: <<-SHELL
+  echo "🔄 [GLOBAL] Atualizando pacotes do sistema..."
+  sudo apt-get update -y
+SHELL
+
+
+  # ---------- VM 1: WEB ----------
+  config.vm.define "web" do |web|
+    web.vm.hostname = "web-server"
+    web.vm.network "private_network", ip: "192.168.50.10"
+config.vm.define "web" do |web|
+  web.vm.hostname = "web-server"
+  web.vm.network "private_network", ip: "192.168.50.10"
+  web.vm.provision "shell", path: "provision.sh"
+config.vm.boot_timeout = 400
+
+end
+
+config.vm.define "db" do |db|
+  db.vm.hostname = "db-server"
+  db.vm.network "private_network", ip: "192.168.50.11"
+  db.vm.provision "shell", path: "provision.sh"
+config.vm.boot_timeout = 400
+
+end
+  
+end
+
+  # ---------- VM 2: DB ----------
+  config.vm.define "db" do |db|
+    db.vm.hostname = "db-server"
+    db.vm.network "private_network", ip: "192.168.50.11"
+config.vm.define "web" do |web|
+  web.vm.hostname = "web-server"
+  web.vm.network "private_network", ip: "192.168.50.10"
+  web.vm.provision "shell", path: "provision.sh"
+config.vm.boot_timeout = 400
+
+end
+
+config.vm.define "db" do |db|
+  db.vm.hostname = "db-server"
+  db.vm.network "private_network", ip: "192.168.50.11"
+  db.vm.provision "shell", path: "provision.sh"
+config.vm.boot_timeout = 400
+
+end
+
+  end
+end
