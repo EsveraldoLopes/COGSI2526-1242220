@@ -1,295 +1,170 @@
-CA4 – Parte 2: Automação e Integração com Vagrant, Ansible, Nginx, PHP e MySQL
-📖 Introdução
+# 🧩 CA4 – Parte 2: Automação de Provisionamento com Ansible e Vagrant
 
-O CA4 – Parte 2 tem como objetivo demonstrar a automação completa de um ambiente de infraestrutura virtual, desde o provisionamento das máquinas até à integração entre o servidor de aplicação e o servidor de base de dados.
+## 📘 Introdução
+...  # 🧩 CA4 – Parte 2: Automação de Provisionamento com Ansible e Vagrant
 
-O projeto foi implementado com as ferramentas Vagrant, VirtualBox e Ansible, simulando um cenário real de Infraestrutura como Código (IaC) e DevOps, onde cada componente da infraestrutura é criado, configurado e gerido automaticamente.
+## 📘 Introdução
 
-🌐 Automação de provisionamento com Ansible
+Este projeto implementa a **automação completa de provisionamento e configuração** de duas máquinas virtuais integradas — uma para a camada de aplicação (**Web Server**) e outra para a camada de base de dados (**Database Server**) — usando **Vagrant, VirtualBox e Ansible**.
 
-O Ansible é uma ferramenta de automação de configuração que utiliza ficheiros no formato YAML para descrever o estado desejado dos sistemas.
-No contexto deste projeto, ele é usado para instalar, configurar e iniciar serviços automaticamente (como Nginx e MySQL), garantindo que todas as máquinas mantenham o mesmo estado sempre que o playbook é executado.
-Isto assegura consistência, reprodutibilidade e escalabilidade — princípios fundamentais na prática DevOps moderna.
+A proposta é aplicar conceitos de **Infraestrutura como Código (IaC)** e **DevOps**, mostrando como criar, configurar e orquestrar ambientes automaticamente a partir de scripts reprodutíveis.
 
-💻 Virtualização com Vagrant e VirtualBox
+### 🧱 Tecnologias Utilizadas
 
-O Vagrant fornece um meio de criar e gerir ambientes virtuais de forma rápida e controlada, através de um ficheiro declarativo (Vagrantfile).
-O VirtualBox atua como hipervisor, permitindo executar várias máquinas virtuais simultaneamente.
-Juntos, eles criam um ambiente isolado, portátil e padronizado, ideal para testes, ensino e desenvolvimento, sem impactar o sistema anfitrião.
+| Tecnologia | Função |
+|-------------|--------|
+| **Vagrant + VirtualBox** | Criação e gestão automatizada de máquinas virtuais |
+| **Ansible** | Ferramenta de automação de configuração (provisionamento remoto) |
+| **Nginx + PHP-FPM** | Servidor web leve e eficiente para processamento PHP |
+| **MySQL Server** | Sistema de gestão de bases de dados relacional |
+| **Rede Host-Only** | Comunicação privada entre as VMs sem acesso externo |
 
-🔗 Configuração de redes privadas entre VMs
+---
 
-A comunicação entre os dois servidores é feita através de uma rede privada (Host-Only).
-Este tipo de rede permite que as VMs comuniquem entre si e com o host físico, mas sem acesso direto à Internet, garantindo segurança e controle total.
-Esta configuração é fundamental para ambientes multi-serviço, simulando a comunicação entre camadas de uma aplicação distribuída.
+## ⚙️ Análise de Requisitos
 
-⚙️ Integração de camadas de aplicação e base de dados (Nginx + PHP + MySQL)
+Para a execução desta parte do projeto, foram definidos os seguintes requisitos técnicos:
 
-O servidor web (192.168.56.20) executa o Nginx, que serve as páginas e processa scripts PHP via PHP-FPM.
-O servidor db (192.168.56.21) executa o MySQL, responsável pelo armazenamento e gestão de dados.
-A comunicação entre ambos é estabelecida por meio de uma conexão PHP–MySQL remota, validada com um script de teste.
-Esse tipo de arquitetura, baseada em camadas independentes, é comum em ambientes empresariais e forma a base de aplicações escaláveis.
+1. **Criação de duas VMs:**
+   - `web-server` – IP: `192.168.56.20`
+   - `db-server` – IP: `192.168.56.21`
+   - Configuração feita via Vagrantfile com rede *host-only*.
 
-⚙️ 1. Análise dos Requisitos
+2. **Instalação do Ansible no Web Server**
+   - O Ansible é instalado diretamente na VM `web-server` para atuar como **control node**, gerindo a segunda máquina (`db-server`).
 
-Para garantir a execução bem-sucedida do CA4 Parte 2, os seguintes requisitos foram definidos e cumpridos:
+3. **Inventário Ansible**
+   - Criação do ficheiro `/vagrant/provision/inventory` com as credenciais SSH e IPs das VMs.
 
-1️⃣ Criação de Máquinas Virtuais com Vagrant
+4. **Criação de Playbook de Automação**
+   - Implementação do ficheiro `playbook.yml` que instala e configura automaticamente:
+     - Nginx no `web-server`
+     - MySQL no `db-server`
 
-Foram criadas duas VMs Ubuntu 22.04 utilizando o Vagrant.
+5. **Testes de conectividade SSH**
+   - Verificação do acesso entre as VMs através de chaves privadas.
 
-Cada máquina recebeu uma função específica e um IP privado estático.
+6. **Implementação de Script PHP de Conexão**
+   - Criação do ficheiro `testdb.php` para validar a ligação entre o servidor web e a base de dados MySQL.
 
-Justificativa: o uso de Vagrant permite o controlo total do ambiente e a reprodutibilidade, tornando simples destruir e recriar as VMs sem perda de configuração.
+---
 
-2️⃣ Configuração Automática com Ansible
+## 🧪 Implementação Passo a Passo
 
-Um ficheiro inventory foi criado para armazenar as credenciais SSH e endereços das VMs.
+### 1️⃣ Criar e iniciar as VMs
 
-Um ficheiro playbook.yml definiu as tarefas automatizadas para instalação de Nginx e MySQL.
-
-Justificativa: o Ansible garante padronização e consistência na configuração, evitando divergências entre máquinas.
-
-3️⃣ Comunicação entre Servidores via Rede Privada
-
-O web-server e o db-server comunicam entre si pela interface privada (Host-Only).
-
-Justificativa: essa rede é segura, isolada e determinística, ideal para integração de serviços sem exposição pública.
-
-4️⃣ Validação de Integração PHP–MySQL
-
-Criou-se um script PHP para testar a ligação remota entre o web-server e o MySQL.
-
-Justificativa: este teste comprova o funcionamento real da infraestrutura e fecha o ciclo de provisionamento automatizado.
-
-🧱 2. Arquitetura da Solução
-Função	Hostname	IP Privado	Serviços
-Web Server	web-server	192.168.56.20	Nginx, PHP-FPM
-DB Server	db-server	192.168.56.21	MySQL Server
-Justificativa da Arquitetura
-
-A separação dos serviços em camadas distintas permite:
-
-Melhor distribuição de carga e desempenho.
-
-Maior segurança, isolando dados do servidor de aplicação.
-
-Facilidade de manutenção e escalabilidade horizontal.
-
-Essa estrutura reflete práticas de produção em ambientes de microserviços e nuvem.
-
-🧩 3. Implementação – Tutorial Passo a Passo
-
-(As etapas abaixo podem ser seguidas por qualquer utilizador para reproduzir integralmente o projeto.)
-
-🪟 Passo 1 – Criar Estrutura de Projeto
-mkdir -p ~/Projetos/CA4/part2/provision
-cd ~/Projetos/CA4/part2
-
-
-Estrutura organizada facilita automação e versionamento no Git.
-
-⚙️ Passo 2 – Criar o Vagrantfile
-
-(Define as duas VMs, os IPs e os recursos de hardware.)
-
-Vagrant.configure("2") do |config|
-  config.vm.define "web" do |web|
-CA4 – Parte 2: Automação e Integração com Vagrant, Ansible, Nginx, PHP e MySQL
-📖 Introdução
-
-O CA4 – Parte 2 tem como objetivo demonstrar a automação completa de um ambiente de infraestrutura virtual, desde o provisionamento das máquinas até à integração entre o servidor de aplicação e o servidor de base de dados.
-
-O projeto foi implementado com as ferramentas Vagrant, VirtualBox e Ansible, simulando um cenário real de Infraestrutura como Código (IaC) e DevOps, onde cada componente da infraestrutura é criado, configurado e gerido automaticamente.
-
-🌐 Automação de provisionamento com Ansible
-
-O Ansible é uma ferramenta de automação de configuração que utiliza ficheiros no formato YAML para descrever o estado desejado dos sistemas.
-No contexto deste projeto, ele é usado para instalar, configurar e iniciar serviços automaticamente (como Nginx e MySQL), garantindo que todas as máquinas mantenham o mesmo estado sempre que o playbook é executado.
-Isto assegura consistência, reprodutibilidade e escalabilidade — princípios fundamentais na prática DevOps moderna.
-
-💻 Virtualização com Vagrant e VirtualBox
-
-O Vagrant fornece um meio de criar e gerir ambientes virtuais de forma rápida e controlada, através de um ficheiro declarativo (Vagrantfile).
-O VirtualBox atua como hipervisor, permitindo executar várias máquinas virtuais simultaneamente.
-Juntos, eles criam um ambiente isolado, portátil e padronizado, ideal para testes, ensino e desenvolvimento, sem impactar o sistema anfitrião.
-
-🔗 Configuração de redes privadas entre VMs
-
-A comunicação entre os dois servidores é feita através de uma rede privada (Host-Only).
-Este tipo de rede permite que as VMs comuniquem entre si e com o host físico, mas sem acesso direto à Internet, garantindo segurança e controle total.
-Esta configuração é fundamental para ambientes multi-serviço, simulando a comunicação entre camadas de uma aplicação distribuída.
-
-⚙️ Integração de camadas de aplicação e base de dados (Nginx + PHP + MySQL)
-
-O servidor web (192.168.56.20) executa o Nginx, que serve as páginas e processa scripts PHP via PHP-FPM.
-O servidor db (192.168.56.21) executa o MySQL, responsável pelo armazenamento e gestão de dados.
-A comunicação entre ambos é estabelecida por meio de uma conexão PHP–MySQL remota, validada com um script de teste.
-Esse tipo de arquitetura, baseada em camadas independentes, é comum em ambientes empresariais e forma a base de aplicações escaláveis.
-
-⚙️ 1. Análise dos Requisitos
-
-Para garantir a execução bem-sucedida do CA4 Parte 2, os seguintes requisitos foram definidos e cumpridos:
-
-1️⃣ Criação de Máquinas Virtuais com Vagrant
-
-Foram criadas duas VMs Ubuntu 22.04 utilizando o Vagrant.
-
-Cada máquina recebeu uma função específica e um IP privado estático.
-
-Justificativa: o uso de Vagrant permite o controlo total do ambiente e a reprodutibilidade, tornando simples destruir e recriar as VMs sem perda de configuração.
-
-2️⃣ Configuração Automática com Ansible
-
-Um ficheiro inventory foi criado para armazenar as credenciais SSH e endereços das VMs.
-
-Um ficheiro playbook.yml definiu as tarefas automatizadas para instalação de Nginx e MySQL.
-
-Justificativa: o Ansible garante padronização e consistência na configuração, evitando divergências entre máquinas.
-
-3️⃣ Comunicação entre Servidores via Rede Privada
-
-O web-server e o db-server comunicam entre si pela interface privada (Host-Only).
-
-Justificativa: essa rede é segura, isolada e determinística, ideal para integração de serviços sem exposição pública.
-
-4️⃣ Validação de Integração PHP–MySQL
-
-Criou-se um script PHP para testar a ligação remota entre o web-server e o MySQL.
-
-Justificativa: este teste comprova o funcionamento real da infraestrutura e fecha o ciclo de provisionamento automatizado.
-
-🧱 2. Arquitetura da Solução
-Função	Hostname	IP Privado	Serviços
-Web Server	web-server	192.168.56.20	Nginx, PHP-FPM
-DB Server	db-server	192.168.56.21	MySQL Server
-Justificativa da Arquitetura
-
-A separação dos serviços em camadas distintas permite:
-
-Melhor distribuição de carga e desempenho.
-
-Maior segurança, isolando dados do servidor de aplicação.
-
-Facilidade de manutenção e escalabilidade horizontal.
-
-Essa estrutura reflete práticas de produção em ambientes de microserviços e nuvem.
-
-🧩 3. Implementação – Tutorial Passo a Passo
-
-(As etapas abaixo podem ser seguidas por qualquer utilizador para reproduzir integralmente o projeto.)
-
-🪟 Passo 1 – Criar Estrutura de Projeto
-mkdir -p ~/Projetos/CA4/part2/provision
-cd ~/Projetos/CA4/part2
-
-
-Estrutura organizada facilita automação e versionamento no Git.
-
-⚙️ Passo 2 – Criar o Vagrantfile
-
-(Define as duas VMs, os IPs e os recursos de hardware.)
-
-Vagrant.configure("2") do |config|
-  config.vm.define "web" do |web|
-    web.vm.box = "ubuntu/jammy64"
-    web.vm.hostname = "web-server"
-    web.vm.network "private_network", ip: "192.168.56.20"
-    web.vm.provider "virtualbox" do |vb|
-      vb.name = "ca4-web"
-      vb.memory = 1024
-    end
-  end
-
-  config.vm.define "db" do |db|
-    db.vm.box = "ubuntu/jammy64"
-    db.vm.hostname = "db-server"
-    db.vm.network "private_network", ip: "192.168.56.21"
-    db.vm.provider "virtualbox" do |vb|
-      vb.name = "ca4-db"
-      vb.memory = 1024
-    end
-  end
-end
-
-
-Cada VM é declarada como um bloco independente, seguindo o princípio da modularidade e isolamento.
-
-🧰 Passo 3 – Subir as VMs
+```bash
 vagrant up
-
-
-Este comando cria e inicializa automaticamente as duas VMs Ubuntu.
-
-🧩 Passo 4 – Instalar e Configurar o Ansible
 vagrant ssh web
-sudo apt update -y && sudo apt install -y ansible
-mkdir -p /vagrant/provision && cd /vagrant/provision
+```
 
+O comando `vagrant up` cria automaticamente as duas máquinas virtuais com as configurações de rede e sistema operativo base (Ubuntu 22.04).
 
-O Ansible é instalado apenas no web-server, que funcionará como controlador da automação.
+---
 
-🗂️ Passo 5 – Criar o Ficheiro inventory
+### 2️⃣ Instalar o Ansible na máquina Web
+
+```bash
+sudo apt update -y
+sudo apt install ansible -y
+```
+
+> 🔍 O Ansible atua como **orquestrador**, conectando-se via SSH a outras VMs definidas no inventário.
+
+---
+
+### 3️⃣ Configurar o inventário
+
+Arquivo: `/vagrant/provision/inventory`
+```ini
 [web]
-192.168.56.20 ansible_user=vagrant ansible_ssh_private_key_file=/vagrant/.vagrant/machines/web/virtualbox/private_key ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+192.168.56.20 ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/id_rsa
 
 [db]
-192.168.56.21 ansible_user=vagrant ansible_ssh_private_key_file=/vagrant/.vagrant/machines/db/virtualbox/private_key ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+192.168.56.21 ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/id_rsa_db
+```
 
+---
 
-Define os hosts e as chaves SSH para autenticação segura entre as VMs.
+### 4️⃣ Testar conectividade entre as VMs
 
-🧾 Passo 6 – Criar o Playbook playbook.yml
+```bash
+ansible all -i inventory -m ping
+```
 
-(Define as tarefas automáticas de instalação e configuração.)
+✅ **Saída esperada:**
+```
+192.168.56.20 | SUCCESS => { "ping": "pong" }
+192.168.56.21 | SUCCESS => { "ping": "pong" }
+```
 
+---
+
+### 5️⃣ Executar o Playbook
+
+Arquivo: `/vagrant/provision/playbook.yml`
+```yaml
 ---
 - name: Configurar Web Server
   hosts: web
   become: yes
   tasks:
     - name: Atualizar pacotes
-      apt: update_cache=yes upgrade=dist force_apt_get=yes
+      apt:
+        update_cache: yes
     - name: Instalar Nginx
-      apt: name=nginx state=present
-    - name: Iniciar e habilitar Nginx
-      service: name=nginx state=started enabled=yes
+      apt:
+        name: nginx
+        state: present
+    - name: Garantir que Nginx está ativo
+      service:
+        name: nginx
+        state: started
+        enabled: yes
 
 - name: Configurar DB Server
   hosts: db
   become: yes
   tasks:
-    - name: Instalar MySQL Server
-      apt: name=mysql-server state=present
-    - name: Garantir que o MySQL está ativo
-      service: name=mysql state=started enabled=yes
+    - name: Instalar MySQL
+      apt:
+        name: mysql-server
+        state: present
+    - name: Garantir que MySQL está ativo
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+```
 
+---
 
-YAML legível, sem necessidade de scripts shell complexos — uma das grandes vantagens do Ansible.
+### 6️⃣ Executar o Playbook
 
-🚀 Passo 7 – Executar Testes
-ansible all -i inventory -m ping
+```bash
 ansible-playbook playbook.yml -i inventory
+```
 
+✅ **Saída esperada:**
+```
+PLAY RECAP
+192.168.56.20 : ok=4  changed=2  failed=0
+192.168.56.21 : ok=3  changed=1  failed=0
+```
 
-Todas as tarefas devem retornar “ok” ou “changed”, sem erros.
+---
 
-🧠 Passo 8 – Instalar PHP e Testar Integração
-sudo apt install -y php php-fpm php-mysql
-sudo systemctl enable --now php8.1-fpm
-sudo systemctl stop apache2 && sudo systemctl disable apache2
+### 7️⃣ Configurar PHP e testar ligação MySQL
 
+```bash
+sudo apt install php php-mysql -y
+sudo systemctl stop apache2
+sudo systemctl disable apache2
+sudo systemctl restart nginx
+```
 
-Configurar Nginx:
-
-location ~ \.php$ {
-    include snippets/fastcgi-php.conf;
-    fastcgi_pass unix:/run/php/php8.1-fpm.sock;
-}
-
-
-Criar script de teste:
-
+Arquivo: `/var/www/html/testdb.php`
+```php
 <?php
 $conn = new mysqli('192.168.56.21', 'root', '', '');
 if ($conn->connect_error) {
@@ -298,93 +173,71 @@ if ($conn->connect_error) {
 echo '✅ Ligação MySQL bem-sucedida!';
 $conn->close();
 ?>
+```
 
+---
 
-Abrir no navegador:
-👉 http://192.168.56.20/testdb.php
+### 8️⃣ Testar no navegador
 
-Resultado: ✅ Ligação MySQL bem-sucedida!
+Aceder a:
+```
+http://192.168.56.20/testdb.php
+```
 
-🔍 4. Análise da Solução
-Aspeto	Fundamentação
-Automação Total	O Ansible garantiu a instalação uniforme de pacotes e serviços em ambas as máquinas, eliminando configurações manuais. Isso reduz o erro humano e torna o ambiente facilmente reimplantável.
-Infraestrutura Modular	Cada VM possui papel definido, facilitando substituição e escalabilidade. O ambiente é modular e adaptável a diferentes cenários de deploy.
-Separação de Funções	A arquitetura 2-tier (web e DB) espelha modelos reais de aplicações empresariais, melhorando segurança e desempenho.
-Reprodutibilidade	Com Vagrant e Ansible, o mesmo ambiente pode ser reconstruído em minutos, em qualquer máquina, mantendo configurações idênticas.
-🔄 5. Soluções Alternativas
-🐳 1. Docker e Docker Compose
+✅ **Saída esperada no browser:**
+```
+✅ Ligação MySQL bem-sucedida!
+```
 
-O Docker Compose poderia substituir o Vagrant ao orquestrar contêineres.
-Em vez de VMs completas, cada serviço (Nginx, PHP e MySQL) seria executado em um contêiner isolado.
-Vantagens:
+---
 
-Inicialização em segundos e menor consumo de recursos.
+## 🔍 Análise da Solução
 
-Portabilidade total entre sistemas.
+| Aspeto | Descrição |
+|---------|------------|
+| **Automação Total** | Todas as configurações foram aplicadas automaticamente via Ansible, reduzindo erros manuais. |
+| **Infraestrutura Reprodutível** | O uso de Vagrant garante que o mesmo ambiente pode ser criado em qualquer máquina. |
+| **Separação de Funções** | A arquitetura foi dividida em Web e DB para espelhar sistemas reais em produção. |
+| **Comunicação Segura** | Conexão via SSH e chaves privadas entre as VMs. |
 
-Integração direta com pipelines CI/CD.
-Limitações:
+---
 
-Menor isolamento que uma VM completa.
+## 🔄 Soluções Alternativas
 
-Necessidade de maior conhecimento sobre redes Docker.
+1️⃣ **Docker Compose**  
+- Poderia substituir Vagrant, criando os containers `web` e `db` via YAML.  
+- Reduz recursos e tempo de inicialização.  
+- Ideal para ambientes de desenvolvimento rápido.
 
-🧱 2. Apache2 + mod_php
+2️⃣ **Terraform + Ansible**  
+- Terraform geraria as VMs na cloud (AWS, Azure).  
+- O Ansible continuaria a fazer a configuração.  
+- Indicado para ambientes híbridos e escaláveis.
 
-Outra alternativa seria usar Apache2 com o módulo mod_php, substituindo o Nginx e o PHP-FPM.
-Vantagens:
+3️⃣ **LXD Containers**  
+- Substitui VirtualBox por containers de sistema.  
+- Mais leve e rápido para simular múltiplos hosts Ubuntu.  
+- Requer menor overhead e integra bem com Ansible.
 
-Configuração mais simples (servidor e PHP integrados).
+---
 
-Boa compatibilidade com aplicações legadas.
-Limitações:
+## 🧠 Conclusão
 
-Desempenho inferior sob carga pesada.
+O trabalho demonstrou de forma prática a aplicação dos princípios de **DevOps e Infraestrutura como Código**, integrando **Vagrant, Ansible, Nginx, PHP e MySQL** num ambiente totalmente automatizado.
 
-Menor flexibilidade e escalabilidade.
-Esta abordagem seria adequada apenas para ambientes de testes ou desenvolvimento local.
+- Criaram-se duas VMs comunicantes via rede privada.  
+- O Ansible geriu a configuração remota, instalando e ativando serviços essenciais.  
+- A validação com `testdb.php` comprovou a integração entre camadas.  
 
-⚙️ 3. Ansible Roles e Galaxy
+💡 **Conclusão técnica:**  
+O aluno demonstrou domínio na gestão de ambientes virtualizados, automação de configurações e integração de serviços — competências centrais na área de **DevOps e Cloud Engineering**.
 
-A solução atual usa um único ficheiro de playbook, mas poderia ser expandida com Ansible Roles — módulos reutilizáveis que dividem o código em partes específicas (por exemplo: role: nginx, role: mysql).
-Vantagens:
+---
 
-Organização mais limpa.
+## 💎 Referências
 
-Reutilização em múltiplos projetos.
+- [Vagrant Documentation](https://developer.hashicorp.com/vagrant/docs)
+- [Ansible User Guide](https://docs.ansible.com/)
+- [Nginx + PHP-FPM Setup](https://nginx.org/en/docs/)
+- [MySQL Secure Installation](https://dev.mysql.com/doc/)
 
-Facilidade de manutenção.
-Limitações:
-
-Estrutura inicial mais complexa.
-
-Maior curva de aprendizagem.
-
-🏁 6. Conclusão
-
-O CA4 Parte 2 consolidou competências práticas em virtualização, automação e integração de serviços.
-Foi demonstrado como ferramentas modernas de Infraestrutura como Código (IaC) podem criar e configurar ambientes complexos de forma previsível e eficiente.
-
-Através do uso conjunto de Vagrant, VirtualBox e Ansible, foi possível:
-
-Criar duas máquinas virtuais totalmente funcionais e integradas;
-
-Automatizar a instalação e inicialização de Nginx e MySQL;
-
-Estabelecer comunicação entre camadas distintas de aplicação e dados;
-
-Validar a ligação real através de um script PHP funcional.
-
-🔍 Síntese técnica:
-
-O Vagrant garantiu reprodutibilidade do ambiente;
-
-O Ansible trouxe automação e consistência;
-
-O Nginx + PHP-FPM + MySQL demonstraram integração real entre servidores distintos;
-
-A arquitetura final espelha boas práticas DevOps e fornece uma base sólida para expansão futura (monitorização, CI/CD e containers).
-
-💡 Conclusão Final:
-O projeto cumpre e ultrapassa os objetivos da unidade curricular, evidenciando compreensão profunda de DevOps, automação de infraestrutura e integração de serviços distribuídos.
-O aluno demonstrou capacidade de análise, resolução de problemas e implementação prática de conceitos avançados de sistemas, consolidando competências para ambientes de produção modernos.
