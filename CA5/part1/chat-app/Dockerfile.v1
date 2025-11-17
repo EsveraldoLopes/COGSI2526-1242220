@@ -1,0 +1,30 @@
+# Dockerfile.v1 — Build completo dentro do container
+
+FROM openjdk:17-jdk-slim AS builder
+
+# Instalar git e maven (build dentro do container exige ferramentas)
+RUN apt-get update && \
+    apt-get install -y git maven && \
+    apt-get clean
+
+# Clonar o repositório CA3 (deve ser público ou ter token)
+RUN git clone https://github.com/EsveraldoLopes/COGSI2526-1242220 /app
+
+WORKDIR /app/CA3/chat
+
+# Fazer o build do servidor do chat
+RUN mvn clean package -DskipTests
+
+# Etapa final — imagem para correr o servidor
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# Copiar o JAR gerado da etapa anterior
+COPY --from=builder /app/CA3/chat/target/chat-server.jar .
+
+# Expor a porta do chat (se for 8080, ajustar se necessário)
+EXPOSE 8080
+
+# Comando de arranque
+CMD ["java", "-jar", "chat-server.jar"]
